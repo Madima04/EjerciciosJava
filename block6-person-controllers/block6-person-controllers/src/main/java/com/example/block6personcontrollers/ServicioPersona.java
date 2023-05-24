@@ -14,5 +14,9 @@ public class ServicioPersona {
     public Persona getPersona() {
         return persona;
     }
+
+    public Ciudad crearCiudad(String nombre, int poblacion) {
+        return new Ciudad(nombre, poblacion);
+    }
 }
 

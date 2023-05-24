@@ -1,19 +1,18 @@
 package com.example.block6personcontrollers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/controlador1")
 public class Controlador1 {
     private ServicioPersona servicioPersona;
+    private ServiciosListadoDeCiudades ServiciosListadoDeCiudades;
 
-    @Autowired
-    public Controlador1(ServicioPersona servicioPersona) {
+    public Controlador1(ServicioPersona servicioPersona, ServiciosListadoDeCiudades ServiciosListadoDeCiudades) {
         this.servicioPersona = servicioPersona;
+        this.ServiciosListadoDeCiudades = ServiciosListadoDeCiudades;
     }
 
     @GetMapping("/addPersona")
@@ -23,4 +22,11 @@ public class Controlador1 {
             @RequestHeader("edad") int edad) {
         return servicioPersona.crearPersona(nombre, poblacion, edad);
     }
+
+    @PostMapping("/addCiudad")
+    public Ciudad addCiudad(@RequestBody Ciudad ciudad) {
+        ServiciosListadoDeCiudades.addCiudad(ciudad);
+        return servicioPersona.crearCiudad(ciudad.getNombre(), ciudad.getPoblacion());
+    }
+
 }

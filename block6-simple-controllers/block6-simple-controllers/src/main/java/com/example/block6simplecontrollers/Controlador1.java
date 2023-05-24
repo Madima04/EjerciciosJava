@@ -17,5 +17,4 @@ public class Controlador1 {
         user.setEdad(user.getEdad() + 1);
         return user;
     }
-
 }
