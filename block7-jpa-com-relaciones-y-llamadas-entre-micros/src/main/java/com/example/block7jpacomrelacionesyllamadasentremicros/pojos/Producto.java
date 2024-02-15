@@ -2,6 +2,7 @@ package com.example.block7jpacomrelacionesyllamadasentremicros.pojos;
 
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.ProductoInputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProductoOutputDto;
+import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProductoOutputDtoSimple;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,5 +29,13 @@ public class Producto {
 
     public float getPrecio() {
         return (float) this.precioProducto;
+    }
+
+    public ProductoOutputDtoSimple toOutputDtoSimple() {
+        ProductoOutputDtoSimple productoOutputDtoSimple = new ProductoOutputDtoSimple();
+        productoOutputDtoSimple.setIdProducto(this.idProducto);
+        productoOutputDtoSimple.setDescripciónProducto(this.descripciónProducto);
+        productoOutputDtoSimple.setPrecioProducto(this.getPrecio());
+        return productoOutputDtoSimple;
     }
 }

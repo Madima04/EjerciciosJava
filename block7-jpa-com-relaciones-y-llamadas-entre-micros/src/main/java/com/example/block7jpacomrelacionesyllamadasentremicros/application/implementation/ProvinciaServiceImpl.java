@@ -60,4 +60,10 @@ public class ProvinciaServiceImpl implements ProvinciaService {
         }
         return provincias;
     }
+
+    public ProvinciaOutputDtoSimple getProvinciaByName(String nombre) {
+        Provincia provincia = provinciaRepository.findByNombre(nombre);
+        provincia.setClientes(clienteRepository.findByProvincia(provincia));
+        return provincia.toOutputDtoSimple();
+    }
 }

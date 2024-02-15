@@ -65,4 +65,9 @@ public class ClienteServiceImpl implements ClienteService {
         List<Cliente> clientes = clienteRepository.findAll();
         return clientes.stream().map(Cliente::toOutputDto).toList();
     }
+
+    public ClienteOutputDtoSimple getClienteByNombre(String nombre) {
+        Cliente cliente = clienteRepository.findByNombre(nombre);
+        return cliente.toOutputDtoSimple();
+    }
 }

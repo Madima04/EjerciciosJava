@@ -7,16 +7,16 @@ import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.Product
 import com.example.block7jpacomrelacionesyllamadasentremicros.application.CabecerasDeFacturaService;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.CabecerasDeFacturaInputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDto;
+import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDtoSimple;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDtoSimple;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.CabecerasDeFactura;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.LíneasDeFactura;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class CabecerasDeFacturaServiceImpl implements CabecerasDeFacturaService {
@@ -115,5 +115,34 @@ public class CabecerasDeFacturaServiceImpl implements CabecerasDeFacturaService 
             cabecerasDeFacturaList.add(cabecerasDeFacturaOutputDto);
         }
         return cabecerasDeFacturaList;
+    }
+
+    public CabecerasDeFacturaOutputDtoSimple getCabeceraDeFacturaByClienteInDateRange(int dni, String fechaInicio, String fechaFin) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date fechaInicioDate;
+        Date fechaFinDate;
+        try {
+            fechaInicioDate = formatter.parse(fechaInicio);
+            fechaFinDate = formatter.parse(fechaFin);
+        } catch (ParseException e) {
+            throw new RuntimeException("Error en el formato de la fecha");
+        }
+
+        CabecerasDeFactura cabecera = cabecerasDeFacturaRepository.findByClienteInDateRange(dni, fechaInicioDate, fechaFinDate);
+
+        if (cabecera != null) {
+            return cabecera.toOutputDtoSimple();
+        } else {
+            throw new RuntimeException("No se ha encontrado ninguna factura para el cliente con DNI " + dni + " en el rango de fechas especificado.");
+        }
+    }
+
+
+    public CabecerasDeFacturaOutputDtoSimple getCabeceraDeFacturaByCodigoProducto(String codigoProducto) {
+        return cabecerasDeFacturaRepository.findByCodigoProducto(codigoProducto).toOutputDtoSimple();
+    }
+
+    public CabecerasDeFacturaOutputDtoSimple getCabeceraDeFacturaById(int id) {
+        return cabecerasDeFacturaRepository.findById(id).get().toOutputDtoSimple();
     }
 }

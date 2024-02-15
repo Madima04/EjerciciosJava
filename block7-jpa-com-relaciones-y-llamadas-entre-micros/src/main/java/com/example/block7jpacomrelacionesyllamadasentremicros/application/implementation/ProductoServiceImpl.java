@@ -4,9 +4,10 @@ import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.Cabecer
 import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.LíneasDeFacturaRepository;
 import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.ProductoRepository;
 import com.example.block7jpacomrelacionesyllamadasentremicros.application.ProductoService;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.LíneasDeFacturaInputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.ProductoInputDto;
+import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDtoSimple;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProductoOutputDto;
+import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProductoOutputDtoSimple;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.LíneasDeFactura;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.Producto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,9 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public Iterable<ProductoOutputDto> getAllProductos() {
         return productoRepository.findAll().stream().map(Producto::toOutputDto).toList();
+    }
+
+    public ProductoOutputDtoSimple getProductoByName(String name) {
+        return productoRepository.findByDescripciónProducto(name).toOutputDtoSimple();
     }
 }
