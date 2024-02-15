@@ -12,9 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CabecerasDeFacturaOutputDto extends CabecerasDeFacturaOutputDtoSimple {
-    int idCabecera;
-    Date fecha;
-    Float importeTotalFactura;
+
     ClienteOutputDtoSimple cliente;
-    Set<LíneasDeFacturaOutputDto> líneasDeFactura;
+    Set<LíneasDeFacturaOutputDtoSimple> líneasDeFactura;
 }

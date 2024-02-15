@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LíneasDeFacturaInputDtoSimple {
+public class LíneasDeFacturaOutputDtoSimple {
     int idLínea;
     int idProducto;
     int cantidad;

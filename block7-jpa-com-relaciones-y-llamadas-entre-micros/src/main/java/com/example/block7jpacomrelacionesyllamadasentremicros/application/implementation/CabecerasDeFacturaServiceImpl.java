@@ -6,13 +6,10 @@ import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.Líneas
 import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.ProductoRepository;
 import com.example.block7jpacomrelacionesyllamadasentremicros.application.CabecerasDeFacturaService;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.CabecerasDeFacturaInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.LíneasDeFacturaInputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDtoSimple;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaInputDtoSimple;
+import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDtoSimple;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.CabecerasDeFactura;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.LíneasDeFactura;
-import com.zaxxer.hikari.util.FastList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,14 +30,14 @@ public class CabecerasDeFacturaServiceImpl implements CabecerasDeFacturaService 
     ProductoRepository productoRepository;
 
     @Override
-    public CabecerasDeFactura addCabeceraDeFactura(CabecerasDeFacturaInputDto cabecerasDeFacturaInputDto) {
+    public CabecerasDeFacturaOutputDto addCabeceraDeFactura(CabecerasDeFacturaInputDto cabecerasDeFacturaInputDto) {
         Set<LíneasDeFactura> líneasDeFacturaInputDtoSimples = new HashSet<>();
         CabecerasDeFactura cabecerasDeFactura = new CabecerasDeFactura();
         cabecerasDeFactura.setIdCabecera(cabecerasDeFacturaInputDto.getIdCabecera());
         cabecerasDeFactura.setFecha(cabecerasDeFacturaInputDto.getFecha());
         cabecerasDeFactura.setCliente(clienteRepository.findById(cabecerasDeFacturaInputDto.getDNI()).get());
         if (cabecerasDeFacturaInputDto.getLíneasDeFactura() != null) {
-            for (LíneasDeFacturaInputDtoSimple líneasDeFactura : cabecerasDeFacturaInputDto.getLíneasDeFactura()) {
+            for (LíneasDeFacturaOutputDtoSimple líneasDeFactura : cabecerasDeFacturaInputDto.getLíneasDeFactura()) {
                 LíneasDeFactura líneasDeFactura1 = new LíneasDeFactura();
                 líneasDeFactura1.setIdLínea(líneasDeFactura.getIdLínea());
                 líneasDeFactura1.setCantidad(líneasDeFactura.getCantidad());
@@ -51,14 +48,17 @@ public class CabecerasDeFacturaServiceImpl implements CabecerasDeFacturaService 
                     líneasDeFactura1.setPrecio(líneasDeFactura1.getProducto().getPrecio());
                 }
                 líneasDeFactura1.setCabecera(cabecerasDeFactura);
+                líneasDeFactura1.setImporte(líneasDeFactura1.getPrecio() * líneasDeFactura1.getCantidad());
                 líneasDeFacturaInputDtoSimples.add(líneasDeFactura1);
             }
-            cabecerasDeFactura.setLíneasDeFactura(líneasDeFacturaInputDtoSimples);
+            cabecerasDeFactura.setImporteTotalFactura(líneasDeFacturaInputDtoSimples.stream().map(LíneasDeFactura::getImporte).reduce(0f, Float::sum));
             cabecerasDeFacturaRepository.save(cabecerasDeFactura);
+            cabecerasDeFactura.setLíneasDeFactura(líneasDeFacturaInputDtoSimples);
+            líneasDeFacturaRepository.saveAll(líneasDeFacturaInputDtoSimples);
         } else {
-            cabecerasDeFactura.setLíneasDeFactura(null);
+            cabecerasDeFactura.setLíneasDeFactura(líneasDeFacturaInputDtoSimples);
         }
-        return cabecerasDeFactura;
+        return cabecerasDeFactura.toOutputDto();
     }
 
     @Override
@@ -80,12 +80,13 @@ public class CabecerasDeFacturaServiceImpl implements CabecerasDeFacturaService 
         cabecerasDeFactura.setFecha(cabecerasDeFacturaInputDto.getFecha());
         cabecerasDeFactura.setCliente(clienteRepository.findById(cabecerasDeFacturaInputDto.getDNI()).get());
         if (cabecerasDeFacturaInputDto.getLíneasDeFactura() != null) {
-            for (LíneasDeFacturaInputDtoSimple líneasDeFactura : cabecerasDeFacturaInputDto.getLíneasDeFactura()) {
+            for (LíneasDeFacturaOutputDtoSimple líneasDeFactura : cabecerasDeFacturaInputDto.getLíneasDeFactura()) {
                 LíneasDeFactura líneasDeFactura1 = new LíneasDeFactura();
                 líneasDeFactura1.setIdLínea(líneasDeFactura.getIdLínea());
                 líneasDeFactura1.setCantidad(líneasDeFactura.getCantidad());
                 líneasDeFactura1.setPrecio(líneasDeFactura.getPrecio());
                 líneasDeFactura1.setProducto(productoRepository.findById(líneasDeFactura.getIdProducto()).get());
+                líneasDeFactura1.setImporte(líneasDeFactura1.getPrecio() * líneasDeFactura1.getCantidad());
                 líneasDeFactura1.setCabecera(cabecerasDeFactura);
                 líneasDeFacturaRepository.save(líneasDeFactura1);
             }
@@ -96,7 +97,23 @@ public class CabecerasDeFacturaServiceImpl implements CabecerasDeFacturaService 
     }
 
     @Override
-    public List<CabecerasDeFactura> getAllCabecerasDeFactura() {
-        return cabecerasDeFacturaRepository.findAll();
+    public List<CabecerasDeFacturaOutputDto> getAllCabecerasDeFactura() {
+        List<CabecerasDeFacturaOutputDto> cabecerasDeFacturaList = new LinkedList<>();
+        Set<LíneasDeFacturaOutputDtoSimple> líneasDeFacturaList = new HashSet<>();
+        CabecerasDeFacturaOutputDto cabecerasDeFacturaOutputDto = new CabecerasDeFacturaOutputDto();
+        for (CabecerasDeFactura cabecerasDeFactura : cabecerasDeFacturaRepository.findAll()) {
+            cabecerasDeFacturaOutputDto.setIdCabecera(cabecerasDeFactura.getIdCabecera());
+            cabecerasDeFacturaOutputDto.setFecha(cabecerasDeFactura.getFecha());
+            cabecerasDeFacturaOutputDto.setImporteTotalFactura(cabecerasDeFactura.getImporteTotalFactura());
+            cabecerasDeFacturaOutputDto.setCliente(cabecerasDeFactura.getCliente().toOutputDtoSimple());
+            for (LíneasDeFactura líneasDeFactura : cabecerasDeFactura.getLíneasDeFactura()) {
+                for (LíneasDeFactura líneasDeFactura1 : líneasDeFacturaRepository.findAll()) {
+                    líneasDeFacturaList.add(líneasDeFactura1.toOutputDtoSimple());
+                    cabecerasDeFacturaOutputDto.setLíneasDeFactura(líneasDeFacturaList);
+                }
+            }
+            cabecerasDeFacturaList.add(cabecerasDeFacturaOutputDto);
+        }
+        return cabecerasDeFacturaList;
     }
 }

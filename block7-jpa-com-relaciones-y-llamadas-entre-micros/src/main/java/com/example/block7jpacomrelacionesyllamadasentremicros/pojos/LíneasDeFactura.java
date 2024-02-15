@@ -1,16 +1,13 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.pojos;
 
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.LíneasDeFacturaInputDto;
+import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDtoSimple;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Setter
+@Getter
 public class LíneasDeFactura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,4 +38,13 @@ public class LíneasDeFactura {
     public void setIdProducto(int idProducto) {
         this.producto.setIdProducto(idProducto);
     }
+
+    public LíneasDeFacturaOutputDtoSimple toOutputDtoSimple() {
+        LíneasDeFacturaOutputDtoSimple líneasDeFacturaOutputDto = new LíneasDeFacturaOutputDtoSimple();
+        líneasDeFacturaOutputDto.setIdLínea(this.idLínea);
+        líneasDeFacturaOutputDto.setCantidad(this.cantidad);
+        líneasDeFacturaOutputDto.setPrecio(this.precio);
+        return líneasDeFacturaOutputDto;
+    }
+
 }

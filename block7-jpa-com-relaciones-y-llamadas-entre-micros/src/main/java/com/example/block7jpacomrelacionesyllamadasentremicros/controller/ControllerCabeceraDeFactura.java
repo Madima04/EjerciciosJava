@@ -15,12 +15,12 @@ public class ControllerCabeceraDeFactura {
     private CabecerasDeFacturaServiceImpl cabecerasDeFacturaService;
 
     @GetMapping(value = "/GetAllCabecerasDeFactura")
-    public Iterable<CabecerasDeFactura> getAllCabecerasDeFactura() {
+    public Iterable<CabecerasDeFacturaOutputDto> getAllCabecerasDeFactura() {
         return cabecerasDeFacturaService.getAllCabecerasDeFactura();
     }
 
     @PostMapping(value = "/addCabeceraDeFactura")
-    public CabecerasDeFactura addCabeceraDeFactura(@RequestBody CabecerasDeFacturaInputDto cabecerasDeFactura) {
+    public CabecerasDeFacturaOutputDto addCabeceraDeFactura(@RequestBody CabecerasDeFacturaInputDto cabecerasDeFactura) {
         return cabecerasDeFacturaService.addCabeceraDeFactura(cabecerasDeFactura);
     }
 

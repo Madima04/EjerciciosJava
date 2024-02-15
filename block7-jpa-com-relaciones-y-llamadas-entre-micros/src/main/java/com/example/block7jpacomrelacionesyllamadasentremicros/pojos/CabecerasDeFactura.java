@@ -1,22 +1,16 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.pojos;
 
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.CabecerasDeFacturaInputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDto;
+import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDtoSimple;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.Date;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 public class CabecerasDeFactura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,12 +27,16 @@ public class CabecerasDeFactura {
 
 
     public CabecerasDeFacturaOutputDto toOutputDto() {
+        Set<LíneasDeFacturaOutputDtoSimple> líneasDeFacturaOutputDtos = new HashSet<>();
         CabecerasDeFacturaOutputDto cabecerasDeFacturaOutputDto = new CabecerasDeFacturaOutputDto();
         cabecerasDeFacturaOutputDto.setIdCabecera(this.idCabecera);
         cabecerasDeFacturaOutputDto.setFecha(this.fecha);
         cabecerasDeFacturaOutputDto.setImporteTotalFactura(this.importeTotalFactura);
         cabecerasDeFacturaOutputDto.setCliente(this.cliente.toOutputDtoSimple());
-        cabecerasDeFacturaOutputDto.setLíneasDeFactura(this.líneasDeFactura.stream().map(LíneasDeFactura::toOutputDto).collect(Collectors.toSet()));
+        for (LíneasDeFactura líneasDeFactura : this.líneasDeFactura) {
+            líneasDeFacturaOutputDtos.add(líneasDeFactura.toOutputDtoSimple());
+        }
+        cabecerasDeFacturaOutputDto.setLíneasDeFactura(líneasDeFacturaOutputDtos);
         return cabecerasDeFacturaOutputDto;
     }
 

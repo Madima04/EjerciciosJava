@@ -2,9 +2,7 @@ package com.example.block7jpacomrelacionesyllamadasentremicros.pojos;
 
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,9 +10,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 public class Provincia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
