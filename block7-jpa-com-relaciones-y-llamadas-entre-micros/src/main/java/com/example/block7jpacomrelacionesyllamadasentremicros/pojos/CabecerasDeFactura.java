@@ -15,7 +15,6 @@ public class CabecerasDeFactura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCabecera;
-    @Future
     private Date fecha;
     private Float importeTotalFactura;
     @ManyToOne
