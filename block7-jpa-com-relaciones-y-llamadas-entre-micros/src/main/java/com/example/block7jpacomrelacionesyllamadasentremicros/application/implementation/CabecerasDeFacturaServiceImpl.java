@@ -63,9 +63,23 @@ public class CabecerasDeFacturaServiceImpl implements CabecerasDeFacturaService 
 
     @Override
     public CabecerasDeFacturaOutputDto getCabeceraDeFactura(Long id) {
+        List<CabecerasDeFacturaOutputDto> cabecerasDeFacturaList = new LinkedList<>();
+        Set<LíneasDeFacturaOutputDtoSimple> líneasDeFacturaList = new HashSet<>();
         CabecerasDeFacturaOutputDto cabecerasDeFacturaOutputDto = new CabecerasDeFacturaOutputDto();
-        cabecerasDeFacturaRepository.findById(Math.toIntExact(id));
-        return cabecerasDeFacturaOutputDto;
+        for (CabecerasDeFactura cabecerasDeFactura : cabecerasDeFacturaRepository.findAll()) {
+            cabecerasDeFacturaOutputDto.setIdCabecera(cabecerasDeFactura.getIdCabecera());
+            cabecerasDeFacturaOutputDto.setFecha(cabecerasDeFactura.getFecha());
+            cabecerasDeFacturaOutputDto.setImporteTotalFactura(cabecerasDeFactura.getImporteTotalFactura());
+            cabecerasDeFacturaOutputDto.setCliente(cabecerasDeFactura.getCliente().toOutputDtoSimple());
+            for (LíneasDeFactura líneasDeFactura : cabecerasDeFactura.getLíneasDeFactura()) {
+                for (LíneasDeFactura líneasDeFactura1 : líneasDeFacturaRepository.findAll()) {
+                    líneasDeFacturaList.add(líneasDeFactura1.toOutputDtoSimple());
+                    cabecerasDeFacturaOutputDto.setLíneasDeFactura(líneasDeFacturaList);
+                }
+            }
+            cabecerasDeFacturaList.add(cabecerasDeFacturaOutputDto);
+        }
+        return cabecerasDeFacturaList.getFirst();
     }
 
     @Override
