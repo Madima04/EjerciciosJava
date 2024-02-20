@@ -29,8 +29,13 @@ public class ControllerCliente {
         return clienteService.addCliente(cliente);
     }
 
+    @GetMapping(value = "/GetNombreCliente/{id}")
+    public String getNombreCliente(@PathVariable long id) {
+        return clienteService.getNombreCliente(id);
+    }
+
     @GetMapping(value = "/DeleteCliente/{id}")
-    public void deleteCliente(Long id) {
+    public void deleteCliente(@PathVariable Long id) {
         clienteService.deleteCliente(id);
     }
 

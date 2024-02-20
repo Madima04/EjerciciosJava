@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class HistoricoVentasOutputDto {
     int id;
-    int clienteId;
-    int productoId;
+    String clienteId;
+    String productoId;
     int mes;
     int año;
     int cantidad;

@@ -18,14 +18,23 @@ public class HistoricoVentas {
     @Id
     @GeneratedValue
     int id;
-    int clienteId;
-    int productoId;
+    String clienteId;
+    String productoId;
     int mes;
     int año;
     int cantidad;
     double importe;
 
+    public HistoricoVentas(String clienteId, String productoId, int mes, int año, int cantidad, double importe) {
+        this.clienteId = clienteId;
+        this.productoId = productoId;
+        this.mes = mes;
+        this.año = año;
+        this.cantidad = cantidad;
+        this.importe = importe;
+    }
+
     public HistoricoVentasOutputDto toHistoricoVentasOutputDto() {
-        return new HistoricoVentasOutputDto(id, clienteId, productoId, mes, año, cantidad, importe);
+        return new HistoricoVentasOutputDto(id, clienteId+"", productoId+"", mes, año, cantidad, importe);
     }
 }

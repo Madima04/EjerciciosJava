@@ -60,4 +60,12 @@ public class ProductoServiceImpl implements ProductoService {
     public ProductoOutputDtoSimple getProductoByName(String name) {
         return productoRepository.findByDescripciónProducto(name).toOutputDtoSimple();
     }
+
+    public ProductoOutputDtoSimple getProductoDescription(int idProducto) {
+        return productoRepository.findById(idProducto).get().toOutputDtoSimple();
+    }
+
+    public String getProductoName(int id) {
+        return productoRepository.findById(id).get().getDescripciónProducto();
+    }
 }

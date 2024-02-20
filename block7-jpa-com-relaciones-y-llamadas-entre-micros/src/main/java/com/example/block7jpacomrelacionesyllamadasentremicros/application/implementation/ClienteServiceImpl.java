@@ -70,4 +70,8 @@ public class ClienteServiceImpl implements ClienteService {
         Cliente cliente = clienteRepository.findByNombre(nombre);
         return cliente.toOutputDtoSimple();
     }
+
+    public String getNombreCliente(Long id) {
+        return clienteRepository.findById(Math.toIntExact(id)).get().getNombre();
+    }
 }

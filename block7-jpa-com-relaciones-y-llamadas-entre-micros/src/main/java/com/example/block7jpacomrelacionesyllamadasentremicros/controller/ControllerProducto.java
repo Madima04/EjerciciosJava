@@ -8,10 +8,7 @@ import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.in
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProductoOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +24,7 @@ public class ControllerProducto {
     }
 
     @GetMapping(value = "/GetProducto/{idProducto}")
-    public ProductoOutputDto getProducto(int idProducto) {
+    public ProductoOutputDto getProducto(@PathVariable int idProducto) {
         return productoService.getProducto(idProducto);
     }
 
@@ -44,5 +41,10 @@ public class ControllerProducto {
     @GetMapping(value = "/UpdateProducto/{idProducto}")
     public ProductoOutputDto updateProducto(int idProducto, ProductoInputDto producto) {
         return productoService.updateProducto(idProducto, producto);
+    }
+
+    @GetMapping(value = "/GetProductoName/{id}")
+    public String getProductoName(@PathVariable int id) {
+        return productoService.getProductoName(id);
     }
 }

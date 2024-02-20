@@ -25,7 +25,8 @@ public class HistoricoVentasInputDto {
         this.cantidad = cantidad;
         this.importe = importe;
     }
+
     public HistoricoVentas toHistoricoVentas() {
-        return new HistoricoVentas(id, clienteId, productoId, mes, año, cantidad, importe);
+        return new HistoricoVentas(clienteId+"", productoId+"", mes, año, cantidad, importe);
     }
 }

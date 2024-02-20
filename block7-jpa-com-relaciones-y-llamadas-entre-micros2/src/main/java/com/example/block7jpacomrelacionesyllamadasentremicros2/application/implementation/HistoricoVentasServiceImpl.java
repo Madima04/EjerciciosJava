@@ -8,6 +8,9 @@ import com.example.block7jpacomrelacionesyllamadasentremicros2.repository.Histor
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -16,6 +19,8 @@ import reactor.core.publisher.Mono;
 import java.util.*;
 
 @Service
+@Configuration
+@EnableCaching
 public class HistoricoVentasServiceImpl implements HistoricoVentasService {
 
     @Autowired
@@ -27,8 +32,7 @@ public class HistoricoVentasServiceImpl implements HistoricoVentasService {
 
     @Override
     public HistoricoVentasOutputDto createHistoricoVentas(HistoricoVentasInputDto historicoVentasInputDto) {
-        historicoVentasRepository.save(historicoVentasInputDto.toHistoricoVentas());
-        return historicoVentasInputDto.toHistoricoVentas().toHistoricoVentasOutputDto();
+        return historicoVentasRepository.save(historicoVentasInputDto.toHistoricoVentas()).toHistoricoVentasOutputDto();
     }
 
     @Override
@@ -52,8 +56,8 @@ public class HistoricoVentasServiceImpl implements HistoricoVentasService {
             for (Object linea : listaLíneasDeFactura) {
                 Map<String, Object> lineaMap = (Map<String, Object>) linea;
                 historicoVentasAux = new HistoricoVentas();
-                historicoVentasAux.setClienteId((Integer) clienteMap.get("dni"));
-                historicoVentasAux.setProductoId((Integer) lineaMap.get("idProducto"));
+                historicoVentasAux.setClienteId(getNombreCliente((Integer) clienteMap.get("dni")));
+                historicoVentasAux.setProductoId(getNombreProducto((Integer) lineaMap.get("idProducto")));
                 historicoVentasAux.setMes(Integer.parseInt(resultado.get("fecha").toString().substring(5, 7)));
                 historicoVentasAux.setAño(Integer.parseInt(resultado.get("fecha").toString().substring(0, 4)));
                 historicoVentasAux.setCantidad((Integer) lineaMap.get("cantidad"));
@@ -105,17 +109,37 @@ public class HistoricoVentasServiceImpl implements HistoricoVentasService {
         }
 
     }
+    @Cacheable("getNombreProducto")
+    public String getNombreProducto(Integer idProducto) {
+        try {
+            String url = "http://localhost:8080/Producto/GetProductoName/" + idProducto;
 
-    private HistoricoVentasOutputDto mapToHistoricoVentasOutputDto(Map<String, List<Object>> resultado) {
-        HistoricoVentasOutputDto historicoVentasOutputDto = new HistoricoVentasOutputDto();
-        List<Object> columnas = resultado.get("Resultado");
-        historicoVentasOutputDto.setClienteId((Integer) columnas.get(1));
-        historicoVentasOutputDto.setProductoId((Integer) columnas.get(2));
-        historicoVentasOutputDto.setMes((Integer) columnas.get(3));
-        historicoVentasOutputDto.setAño((Integer) columnas.get(4));
-        historicoVentasOutputDto.setImporte((Double) columnas.get(6));
-        return historicoVentasOutputDto;
+            WebClient webClient = WebClient.create(url);
+            Mono<String> jsonMono = webClient.get().uri(url).retrieve().bodyToMono(String.class);
+            String nombreCliente = jsonMono.block(); // Obtener el nombre del cliente como cadena
+
+            return nombreCliente;
+        } catch (Exception e) {
+            // Manejo de excepciones
+            throw new RuntimeException("Error al obtener el nombre del cliente", e);
+        }
     }
+    @Cacheable("getNombreCliente")
+    public String getNombreCliente(Integer dniUsuario) {
+        try {
+            String url = "http://localhost:8080/Cliente/GetNombreCliente/" + dniUsuario;
+
+            WebClient webClient = WebClient.create(url);
+            Mono<String> jsonMono = webClient.get().uri(url).retrieve().bodyToMono(String.class);
+            String nombreCliente = jsonMono.block(); // Obtener el nombre del cliente como cadena
+
+            return nombreCliente;
+        } catch (Exception e) {
+            // Manejo de excepciones
+            throw new RuntimeException("Error al obtener el nombre del cliente", e);
+        }
+    }
+
 
 
     @Override
@@ -124,8 +148,8 @@ public class HistoricoVentasServiceImpl implements HistoricoVentasService {
         if (historicoVentas.isPresent()) {
             HistoricoVentas historicoVentas1 = historicoVentas.get();
             historicoVentas1.setId(id);
-            historicoVentas1.setClienteId(historicoVentasInputDto.getClienteId());
-            historicoVentas1.setProductoId(historicoVentasInputDto.getProductoId());
+            historicoVentas1.setClienteId(getNombreCliente(historicoVentasInputDto.getClienteId()));
+            historicoVentas1.setProductoId(getNombreProducto(historicoVentasInputDto.getProductoId()));
             historicoVentas1.setMes(historicoVentasInputDto.getMes());
             historicoVentas1.setAño(historicoVentasInputDto.getAño());
             historicoVentas1.setCantidad(historicoVentasInputDto.getCantidad());
