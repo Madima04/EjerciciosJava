@@ -3,6 +3,7 @@ package com.example.block7jpacomrelacionesyllamadasentremicros.Repository;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.CabecerasDeFacturaInputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.CabecerasDeFactura;
+import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,4 +15,8 @@ public interface CabecerasDeFacturaRepository extends JpaRepository<CabecerasDeF
     CabecerasDeFactura findByClienteInDateRange(int dni, Date fechaInicio, Date fechaFin);
     @Query("SELECT c FROM CabecerasDeFactura c join c.líneasDeFactura l WHERE l.producto.idProducto = ?1")
     CabecerasDeFactura findByCodigoProducto(String codigoProducto);
+    @Query("SELECT c FROM CabecerasDeFactura c join c.líneasDeFactura l WHERE FUNCTION('YEAR', c.fecha) = ?1 AND FUNCTION('MONTH', c.fecha) = ?2")
+    CabecerasDeFactura findByAñoAndMes(int año, int mes);
+
+
 }

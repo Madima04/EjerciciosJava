@@ -82,6 +82,10 @@ public class CabecerasDeFacturaServiceImpl implements CabecerasDeFacturaService 
         return cabecerasDeFacturaList.getFirst();
     }
 
+    public CabecerasDeFacturaOutputDto getCabeceraDeFacturaByAñoYMes(int año, int mes) {
+        return cabecerasDeFacturaRepository.findByAñoAndMes(año, mes).toOutputDto();
+    }
+
     @Override
     public void deleteCabeceraDeFactura(int id) {
         cabecerasDeFacturaRepository.findById(id).ifPresent(cabecerasDeFacturaRepository::delete);

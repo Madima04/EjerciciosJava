@@ -42,6 +42,7 @@ public class LíneasDeFactura {
     public LíneasDeFacturaOutputDtoSimple toOutputDtoSimple() {
         LíneasDeFacturaOutputDtoSimple líneasDeFacturaOutputDto = new LíneasDeFacturaOutputDtoSimple();
         líneasDeFacturaOutputDto.setIdLínea(this.idLínea);
+        líneasDeFacturaOutputDto.setProducto(this.producto.getIdProducto());
         líneasDeFacturaOutputDto.setCantidad(this.cantidad);
         líneasDeFacturaOutputDto.setPrecio(this.precio);
         return líneasDeFacturaOutputDto;
