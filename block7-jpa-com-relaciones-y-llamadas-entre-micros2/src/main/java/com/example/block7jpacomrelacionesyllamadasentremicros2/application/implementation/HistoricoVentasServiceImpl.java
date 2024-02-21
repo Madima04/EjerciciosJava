@@ -1,6 +1,7 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros2.application.implementation;
 
 import com.example.block7jpacomrelacionesyllamadasentremicros2.application.HistoricoVentasService;
+import com.example.block7jpacomrelacionesyllamadasentremicros2.gestionDeErorres.BeanNotFoundException;
 import com.example.block7jpacomrelacionesyllamadasentremicros2.pojos.HistoricoVentas;
 import com.example.block7jpacomrelacionesyllamadasentremicros2.pojos.dtos.input.HistoricoVentasInputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros2.pojos.dtos.output.HistoricoVentasOutputDto;
@@ -87,7 +88,7 @@ public class HistoricoVentasServiceImpl implements HistoricoVentasService {
             });
         } catch (Exception e) {
             // Manejo de excepciones
-            throw new RuntimeException("Error al obtener el historial de ventas", e);
+            throw new BeanNotFoundException("Error al obtener la cabecera de factura");
         }
 
     }
@@ -105,7 +106,7 @@ public class HistoricoVentasServiceImpl implements HistoricoVentasService {
             });
         } catch (Exception e) {
             // Manejo de excepciones
-            throw new RuntimeException("Error al obtener el historial de ventas", e);
+            throw new BeanNotFoundException("Error al obtener el historial de ventas");
         }
 
     }
@@ -121,7 +122,7 @@ public class HistoricoVentasServiceImpl implements HistoricoVentasService {
             return nombreCliente;
         } catch (Exception e) {
             // Manejo de excepciones
-            throw new RuntimeException("Error al obtener el nombre del cliente", e);
+            throw new BeanNotFoundException("Error al obtener el nombre del producto");
         }
     }
     @Cacheable("getNombreCliente")
@@ -136,7 +137,7 @@ public class HistoricoVentasServiceImpl implements HistoricoVentasService {
             return nombreCliente;
         } catch (Exception e) {
             // Manejo de excepciones
-            throw new RuntimeException("Error al obtener el nombre del cliente", e);
+            throw new BeanNotFoundException("Error al obtener el nombre del cliente");
         }
     }
 
