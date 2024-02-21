@@ -62,7 +62,7 @@ public class HistoricoVentasServiceImpl implements HistoricoVentasService {
                 historicoVentasAux.setMes(Integer.parseInt(resultado.get("fecha").toString().substring(5, 7)));
                 historicoVentasAux.setAño(Integer.parseInt(resultado.get("fecha").toString().substring(0, 4)));
                 historicoVentasAux.setCantidad((Integer) lineaMap.get("cantidad"));
-                Object cantidad =  lineaMap.get("cantidad");
+                Object cantidad = lineaMap.get("cantidad");
                 Object precio = lineaMap.get("precio");
                 double importe = (Integer) cantidad * (Double) precio;
                 importeTotal += importe;  // Sumamos el importe de cada línea al total
@@ -110,6 +110,7 @@ public class HistoricoVentasServiceImpl implements HistoricoVentasService {
         }
 
     }
+
     @Cacheable("getNombreProducto")
     public String getNombreProducto(Integer idProducto) {
         try {
@@ -125,6 +126,7 @@ public class HistoricoVentasServiceImpl implements HistoricoVentasService {
             throw new BeanNotFoundException("Error al obtener el nombre del producto");
         }
     }
+
     @Cacheable("getNombreCliente")
     public String getNombreCliente(Integer dniUsuario) {
         try {
@@ -140,7 +142,6 @@ public class HistoricoVentasServiceImpl implements HistoricoVentasService {
             throw new BeanNotFoundException("Error al obtener el nombre del cliente");
         }
     }
-
 
 
     @Override
