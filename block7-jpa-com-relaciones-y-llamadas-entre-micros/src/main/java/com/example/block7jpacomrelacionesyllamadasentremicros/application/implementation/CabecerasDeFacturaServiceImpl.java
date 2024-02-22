@@ -12,6 +12,7 @@ import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.ou
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.CabecerasDeFactura;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.LíneasDeFactura;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -28,6 +29,8 @@ public class CabecerasDeFacturaServiceImpl implements CabecerasDeFacturaService 
     LíneasDeFacturaRepository líneasDeFacturaRepository;
     @Autowired
     ProductoRepository productoRepository;
+    @Autowired
+    KafkaTemplate<String, CabecerasDeFacturaOutputDto> kafkaTemplate;
 
     @Override
     public CabecerasDeFacturaOutputDto addCabeceraDeFactura(CabecerasDeFacturaInputDto cabecerasDeFacturaInputDto) {
@@ -58,6 +61,7 @@ public class CabecerasDeFacturaServiceImpl implements CabecerasDeFacturaService 
         } else {
             cabecerasDeFactura.setLíneasDeFactura(líneasDeFacturaInputDtoSimples);
         }
+        kafkaTemplate.send("factura", cabecerasDeFactura.toOutputDto());
         return cabecerasDeFactura.toOutputDto();
     }
 
