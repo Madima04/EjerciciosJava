@@ -1,13 +1,18 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros2.kafka;
 
+import com.example.block7jpacomrelacionesyllamadasentremicros2.pojos.HistoricoClientes;
+import com.example.block7jpacomrelacionesyllamadasentremicros2.pojos.HistoricoProductos;
 import com.example.block7jpacomrelacionesyllamadasentremicros2.pojos.HistoricoVentas;
 import com.example.block7jpacomrelacionesyllamadasentremicros2.pojos.dtos.input.HistoricoVentasInputDto;
+import com.example.block7jpacomrelacionesyllamadasentremicros2.repository.HistoricoClientesRepository;
+import com.example.block7jpacomrelacionesyllamadasentremicros2.repository.HistoricoProductosRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -18,23 +23,44 @@ import java.util.Map;
 
 @Component
 public class KafkaConsumerListener {
+
+    @Autowired
+    HistoricoClientesRepository historicoClientesRepository;
+
+    @Autowired
+    HistoricoProductosRepository historicoProductosRepository;
+
     private static final Logger logger = LoggerFactory.getLogger(KafkaConsumerListener.class);
 
     private Map<String, Object> lastReceivedMessage;
 
-    @KafkaListener(topics = {"factura"}, groupId = "group_id")
+    @KafkaListener(topics = {"Cliente"}, groupId = "group_id")
     public void listen(String message) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            lastReceivedMessage = objectMapper.readValue(message, new TypeReference<Map<String, Object>>() {});
-            HistoricoVentasInputDto historicoVentasInputDto = new HistoricoVentasInputDto();
-            List<Object> listaLíneasDeFactura = (List<Object>) lastReceivedMessage.get("líneasDeFactura");
-            List<Object> cliente = Collections.singletonList(lastReceivedMessage.get("cliente"));
-            Map<String, Object> clienteMap = (Map<String, Object>) cliente.get(0);
-            System.out.println("Cliente: " + clienteMap + " Líneas de factura: " + listaLíneasDeFactura);
-            logger.info("Mensaje Kafka recibido: {}", lastReceivedMessage);
-        } catch (JsonProcessingException e) {
-            logger.error("Error al procesar el mensaje Kafka: {}", e.getMessage());
+        logger.info("Received Message in group foo: " + message);
+        lastReceivedMessage = Collections.singletonMap("Cliente", message);
+        HistoricoClientes historicoClientes = new HistoricoClientes();
+        historicoClientes.setClienteId((Integer) lastReceivedMessage.get("idCliente"));
+        historicoClientes.setNombre((String) lastReceivedMessage.get("nombreCliente"));
+        if (historicoClientesRepository.findById(historicoClientes.getClienteId()).isPresent()) {
+            historicoClientesRepository.deleteById(historicoClientes.getClienteId());
+            historicoClientesRepository.save(historicoClientes);
+        }else {
+            historicoClientesRepository.save(historicoClientes);
+        }
+    }
+
+    @KafkaListener(topics = {"Producto"}, groupId = "group_id")
+    public void listenProducto(String message) {
+        logger.info("Received Message in group foo: " + message);
+        lastReceivedMessage = Collections.singletonMap("Producto", message);
+        HistoricoProductos historicoProductos = new HistoricoProductos();
+        historicoProductos.setProductoId((Integer) lastReceivedMessage.get("idProducto"));
+        historicoProductos.setNombre((String) lastReceivedMessage.get("descripciónProducto"));
+        if (historicoProductosRepository.findById(historicoProductos.getProductoId()).isPresent()) {
+            historicoProductosRepository.deleteById(historicoProductos.getProductoId());
+            historicoProductosRepository.save(historicoProductos);
+        }else {
+            historicoProductosRepository.save(historicoProductos);
         }
     }
 }

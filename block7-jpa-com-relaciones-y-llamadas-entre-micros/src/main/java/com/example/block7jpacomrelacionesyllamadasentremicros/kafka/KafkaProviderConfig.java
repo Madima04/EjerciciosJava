@@ -1,6 +1,9 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.kafka;
 
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDto;
+import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDtoSimple;
+import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProductoOutputDto;
+import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProductoOutputDtoSimple;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,13 +34,23 @@ public class KafkaProviderConfig {
     }
 
     @Bean
-    public ProducerFactory<String, CabecerasDeFacturaOutputDto> producerFactory() {
+    public ProducerFactory<String, ClienteOutputDtoSimple> producerFactoryCliente() {
         return new DefaultKafkaProducerFactory<>(producerConfig());
     }
 
     @Bean
-    public KafkaTemplate<String, CabecerasDeFacturaOutputDto> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
+    public KafkaTemplate<String, ClienteOutputDtoSimple> kafkaTemplateCliente() {
+        return new KafkaTemplate<>(producerFactoryCliente());
+    }
+
+    @Bean
+    public ProducerFactory<String, ProductoOutputDtoSimple> producerFactoryProducto() {
+        return new DefaultKafkaProducerFactory<>(producerConfig());
+    }
+
+    @Bean
+    public KafkaTemplate<String, ProductoOutputDtoSimple> kafkaTemplateProducto() {
+        return new KafkaTemplate<>(producerFactoryProducto());
     }
 
 }

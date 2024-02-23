@@ -5,11 +5,13 @@ import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.Cliente
 import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.ProvinciaRepository;
 import com.example.block7jpacomrelacionesyllamadasentremicros.application.ClienteService;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.ClienteInputDto;
+import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDtoSimple;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.Cliente;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.Provincia;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,8 @@ public class ClienteServiceImpl implements ClienteService {
     CabecerasDeFacturaRepository cabecerasDeFacturaRepository;
     @Autowired
     ProvinciaRepository provinciaRepository;
+    @Autowired
+    KafkaTemplate<String, ClienteOutputDtoSimple> kafkaTemplate;
 
     @Override
     public ClienteOutputDto getClienteById(Long id) {
@@ -41,6 +45,7 @@ public class ClienteServiceImpl implements ClienteService {
         Optional<Provincia> provincia = provinciaRepository.findById(clienteInputDto.getProvinciaId());
         provincia.ifPresent(cliente::setProvincia);
         clienteRepository.save(cliente);
+        kafkaTemplate.send("Cliente", cliente.toOutputDtoSimple());
         return cliente.toOutputDtoSimple();
     }
 
@@ -57,6 +62,7 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setDirección(clienteInputDto.getDirección());
         cliente.setProvincia(provinciaRepository.findById(clienteInputDto.getProvinciaId()).get());
         clienteRepository.save(cliente);
+        kafkaTemplate.send("Cliente", cliente.toOutputDtoSimple());
         return cliente.toOutputDto();
     }
 

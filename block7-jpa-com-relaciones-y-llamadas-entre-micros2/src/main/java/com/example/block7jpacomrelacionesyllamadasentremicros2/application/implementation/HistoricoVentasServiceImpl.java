@@ -5,6 +5,8 @@ import com.example.block7jpacomrelacionesyllamadasentremicros2.gestionDeErorres.
 import com.example.block7jpacomrelacionesyllamadasentremicros2.pojos.HistoricoVentas;
 import com.example.block7jpacomrelacionesyllamadasentremicros2.pojos.dtos.input.HistoricoVentasInputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros2.pojos.dtos.output.HistoricoVentasOutputDto;
+import com.example.block7jpacomrelacionesyllamadasentremicros2.repository.HistoricoClientesRepository;
+import com.example.block7jpacomrelacionesyllamadasentremicros2.repository.HistoricoProductosRepository;
 import com.example.block7jpacomrelacionesyllamadasentremicros2.repository.HistoricoVentasRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +32,12 @@ public class HistoricoVentasServiceImpl implements HistoricoVentasService {
     }
 
     private HistoricoVentasRepository historicoVentasRepository;
+
+    @Autowired
+    HistoricoProductosRepository historicoProductosRepository;
+
+    @Autowired
+    HistoricoClientesRepository historicoClientesRepository;
 
     @Override
     public HistoricoVentasOutputDto createHistoricoVentas(HistoricoVentasInputDto historicoVentasInputDto) {
@@ -58,7 +66,9 @@ public class HistoricoVentasServiceImpl implements HistoricoVentasService {
                 Map<String, Object> lineaMap = (Map<String, Object>) linea;
                 historicoVentasAux = new HistoricoVentas();
                 historicoVentasAux.setClienteId(getNombreCliente((Integer) clienteMap.get("dni")));
+                //historicoVentasAux.setClienteId(historicoClientesRepository.findById((Integer) clienteMap.get("dni")).get().getNombre());
                 historicoVentasAux.setProductoId(getNombreProducto((Integer) lineaMap.get("idProducto")));
+                //historicoVentasAux.setProductoId(historicoProductosRepository.findById((Integer) lineaMap.get("idProducto")).get().getNombre());
                 historicoVentasAux.setMes(Integer.parseInt(resultado.get("fecha").toString().substring(5, 7)));
                 historicoVentasAux.setAño(Integer.parseInt(resultado.get("fecha").toString().substring(0, 4)));
                 historicoVentasAux.setCantidad((Integer) lineaMap.get("cantidad"));

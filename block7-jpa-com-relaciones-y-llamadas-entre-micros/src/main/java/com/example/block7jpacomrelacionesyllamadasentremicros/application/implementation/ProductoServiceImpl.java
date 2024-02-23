@@ -5,12 +5,14 @@ import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.Líneas
 import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.ProductoRepository;
 import com.example.block7jpacomrelacionesyllamadasentremicros.application.ProductoService;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.ProductoInputDto;
+import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDtoSimple;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDtoSimple;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProductoOutputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProductoOutputDtoSimple;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.LíneasDeFactura;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.Producto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +23,8 @@ public class ProductoServiceImpl implements ProductoService {
     LíneasDeFacturaRepository líneasDeFacturaRepository;
     @Autowired
     CabecerasDeFacturaRepository cabecerasDeFacturaRepository;
+    @Autowired
+    KafkaTemplate<String, ProductoOutputDtoSimple> kafkaTemplate;
 
     @Override
     public ProductoOutputDto getProducto(int idProducto) {
@@ -33,7 +37,8 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setIdProducto(productoInputDto.getIdProducto());
         producto.setDescripciónProducto(productoInputDto.getDescripciónProducto());
         producto.setPrecioProducto(productoInputDto.getPrecioProducto());
-        producto.setLineasDeFacturas((LíneasDeFactura) líneasDeFacturaRepository.findAllById(productoInputDto.getLíneasDeFactura()));
+        //producto.setLineasDeFacturas((LíneasDeFactura) líneasDeFacturaRepository.findAllById(productoInputDto.getLíneasDeFactura()));
+        kafkaTemplate.send("Producto", producto.toOutputDtoSimple());
         return productoRepository.save(producto).toOutputDto();
     }
 
@@ -49,6 +54,7 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setDescripciónProducto(productoInputDto.getDescripciónProducto());
         producto.setPrecioProducto(productoInputDto.getPrecioProducto());
         //producto.setLineasDeFacturas((LíneasDeFactura) líneasDeFacturaRepository.findAllById(productoInputDto.getLíneasDeFactura()));
+        kafkaTemplate.send("Producto", producto.toOutputDtoSimple());
         return productoRepository.save(producto).toOutputDto();
     }
 

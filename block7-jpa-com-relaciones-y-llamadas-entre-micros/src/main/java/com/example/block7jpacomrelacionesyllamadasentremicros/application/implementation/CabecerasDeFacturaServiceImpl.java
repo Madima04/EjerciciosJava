@@ -29,8 +29,6 @@ public class CabecerasDeFacturaServiceImpl implements CabecerasDeFacturaService 
     LíneasDeFacturaRepository líneasDeFacturaRepository;
     @Autowired
     ProductoRepository productoRepository;
-    @Autowired
-    KafkaTemplate<String, CabecerasDeFacturaOutputDto> kafkaTemplate;
 
     @Override
     public CabecerasDeFacturaOutputDto addCabeceraDeFactura(CabecerasDeFacturaInputDto cabecerasDeFacturaInputDto) {
@@ -61,7 +59,6 @@ public class CabecerasDeFacturaServiceImpl implements CabecerasDeFacturaService 
         } else {
             cabecerasDeFactura.setLíneasDeFactura(líneasDeFacturaInputDtoSimples);
         }
-        kafkaTemplate.send("factura", cabecerasDeFactura.toOutputDto());
         return cabecerasDeFactura.toOutputDto();
     }
 
