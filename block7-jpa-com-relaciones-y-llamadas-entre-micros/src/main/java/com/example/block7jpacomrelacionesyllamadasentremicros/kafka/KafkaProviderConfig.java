@@ -1,11 +1,9 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.kafka;
 
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDtoSimple;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProductoOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProductoOutputDtoSimple;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.example.dtos.output.ClienteOutputDtoSimple;
+import org.example.dtos.output.ProductoOutputDtoSimple;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,8 +27,8 @@ public class KafkaProviderConfig {
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, boootstrapServers);
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        properties.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, true);
         return properties;
-
     }
 
     @Bean

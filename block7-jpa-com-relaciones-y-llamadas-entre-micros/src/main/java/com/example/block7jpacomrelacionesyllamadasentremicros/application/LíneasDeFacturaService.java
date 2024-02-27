@@ -1,7 +1,7 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.application;
 
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.LíneasDeFacturaInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDto;
+import org.example.dtos.input.LíneasDeFacturaInputDto;
+import org.example.dtos.output.LíneasDeFacturaOutputDto;
 
 public interface LíneasDeFacturaService {
     LíneasDeFacturaOutputDto getLíneasDeFactura(Long id);

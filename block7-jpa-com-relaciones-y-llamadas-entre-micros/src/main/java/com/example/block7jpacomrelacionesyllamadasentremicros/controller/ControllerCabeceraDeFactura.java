@@ -1,15 +1,11 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.controller;
 
 import com.example.block7jpacomrelacionesyllamadasentremicros.application.implementation.CabecerasDeFacturaServiceImpl;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.CabecerasDeFacturaInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDtoSimple;
-import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.CabecerasDeFactura;
+import org.example.dtos.input.CabecerasDeFacturaInputDto;
+import org.example.dtos.output.CabecerasDeFacturaOutputDto;
+import org.example.dtos.output.CabecerasDeFacturaOutputDtoSimple;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 
 @RestController
 @RequestMapping("/CabeceraDeFactura")

@@ -1,9 +1,9 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.controller;
 
 import com.example.block7jpacomrelacionesyllamadasentremicros.application.implementation.ClienteServiceImpl;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.ClienteInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDtoSimple;
+import org.example.dtos.input.ClienteInputDto;
+import org.example.dtos.output.ClienteOutputDto;
+import org.example.dtos.output.ClienteOutputDtoSimple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

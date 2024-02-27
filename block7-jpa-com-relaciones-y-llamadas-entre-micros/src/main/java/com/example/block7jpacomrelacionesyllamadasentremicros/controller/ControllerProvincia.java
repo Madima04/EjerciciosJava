@@ -1,10 +1,10 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.controller;
 
 import com.example.block7jpacomrelacionesyllamadasentremicros.application.implementation.ProvinciaServiceImpl;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.ProvinciaInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProvinciaOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProvinciaOutputDtoImp;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProvinciaOutputDtoSimple;
+import org.example.dtos.input.ProvinciaInputDto;
+import org.example.dtos.output.ProvinciaOutputDto;
+import org.example.dtos.output.ProvinciaOutputDtoImp;
+import org.example.dtos.output.ProvinciaOutputDtoSimple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +28,7 @@ public class ControllerProvincia {
     }
 
     @GetMapping(value = "/addProvincia")
-    public ProvinciaOutputDtoImp addProvincia(@RequestBody  ProvinciaInputDto provincia) {
+    public ProvinciaOutputDtoImp addProvincia(@RequestBody ProvinciaInputDto provincia) {
         return provinciaService.addProvincia(provincia);
     }
 

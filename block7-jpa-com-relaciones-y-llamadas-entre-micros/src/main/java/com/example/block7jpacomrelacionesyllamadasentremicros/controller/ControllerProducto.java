@@ -1,16 +1,10 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.controller;
 
-import com.example.block7jpacomrelacionesyllamadasentremicros.application.ProductoService;
-import com.example.block7jpacomrelacionesyllamadasentremicros.application.implementation.ClienteServiceImpl;
 import com.example.block7jpacomrelacionesyllamadasentremicros.application.implementation.ProductoServiceImpl;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.ClienteInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.ProductoInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProductoOutputDto;
+import org.example.dtos.input.ProductoInputDto;
+import org.example.dtos.output.ProductoOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/Producto")

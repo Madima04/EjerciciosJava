@@ -1,6 +1,5 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.Repository;
 
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.LíneasDeFacturaInputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.CabecerasDeFactura;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.LíneasDeFactura;
 import org.springframework.data.jpa.repository.JpaRepository;

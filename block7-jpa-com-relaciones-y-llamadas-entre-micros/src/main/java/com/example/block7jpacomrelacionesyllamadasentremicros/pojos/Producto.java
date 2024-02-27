@@ -1,10 +1,9 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.pojos;
 
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.ProductoInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProductoOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProductoOutputDtoSimple;
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.dtos.output.ProductoOutputDto;
+import org.example.dtos.output.ProductoOutputDtoSimple;
 
 @Entity
 @Getter

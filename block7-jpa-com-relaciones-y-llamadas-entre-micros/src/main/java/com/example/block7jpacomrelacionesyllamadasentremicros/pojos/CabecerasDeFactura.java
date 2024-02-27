@@ -1,10 +1,9 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.pojos;
 
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDtoSimple;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
 import lombok.*;
+import org.example.dtos.output.CabecerasDeFacturaOutputDto;
+import org.example.dtos.output.LíneasDeFacturaOutputDtoSimple;
 
 import java.util.*;
 

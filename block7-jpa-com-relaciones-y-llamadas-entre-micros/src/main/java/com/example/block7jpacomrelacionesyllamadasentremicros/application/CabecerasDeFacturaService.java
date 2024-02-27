@@ -1,7 +1,7 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.application;
 
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.CabecerasDeFacturaInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDto;
+import org.example.dtos.input.CabecerasDeFacturaInputDto;
+import org.example.dtos.output.CabecerasDeFacturaOutputDto;
 
 import java.util.List;
 

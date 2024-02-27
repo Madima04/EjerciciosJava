@@ -3,11 +3,11 @@ package com.example.block7jpacomrelacionesyllamadasentremicros.application.imple
 import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.ClienteRepository;
 import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.ProvinciaRepository;
 import com.example.block7jpacomrelacionesyllamadasentremicros.application.ProvinciaService;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.ProvinciaInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProvinciaOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProvinciaOutputDtoImp;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ProvinciaOutputDtoSimple;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.Provincia;
+import org.example.dtos.input.ProvinciaInputDto;
+import org.example.dtos.output.ProvinciaOutputDto;
+import org.example.dtos.output.ProvinciaOutputDtoImp;
+import org.example.dtos.output.ProvinciaOutputDtoSimple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

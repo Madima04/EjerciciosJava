@@ -1,4 +1,4 @@
-package com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output;
+package org.example.dtos.output;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

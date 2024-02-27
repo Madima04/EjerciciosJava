@@ -5,14 +5,13 @@ import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.Cliente
 import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.LíneasDeFacturaRepository;
 import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.ProductoRepository;
 import com.example.block7jpacomrelacionesyllamadasentremicros.application.CabecerasDeFacturaService;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.CabecerasDeFacturaInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDtoSimple;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDtoSimple;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.CabecerasDeFactura;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.LíneasDeFactura;
+import org.example.dtos.input.CabecerasDeFacturaInputDto;
+import org.example.dtos.output.CabecerasDeFacturaOutputDto;
+import org.example.dtos.output.CabecerasDeFacturaOutputDtoSimple;
+import org.example.dtos.output.LíneasDeFacturaOutputDtoSimple;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;

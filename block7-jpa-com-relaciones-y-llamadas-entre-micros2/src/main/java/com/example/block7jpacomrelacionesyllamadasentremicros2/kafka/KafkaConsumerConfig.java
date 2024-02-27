@@ -31,18 +31,20 @@ public class KafkaConsumerConfig {
         properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, boootstrapServers);
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringSerializer.class);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        properties.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        properties.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, true);
         return properties;
     }
 
     @Bean
-    public ConsumerFactory<String, String> ConsumerFactory() {
-        return new DefaultKafkaConsumerFactory<>(ConsumerConfig());
+    public ConsumerFactory<String, Object> consumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(ConsumerConfig(), new StringDeserializer(), new JsonDeserializer<>());
     }
 
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> consumer() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(ConsumerFactory());
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, Object>> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory());
         return factory;
     }
 }

@@ -1,6 +1,5 @@
-package com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output;
+package org.example.dtos.output;
 
-import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.Provincia;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

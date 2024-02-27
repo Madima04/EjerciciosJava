@@ -3,6 +3,10 @@ package com.example.block7jpacomrelacionesyllamadasentremicros.pojos;
 import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.*;
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.dtos.output.ClienteOutputDtoSimple;
+import org.example.dtos.output.ProvinciaOutputDto;
+import org.example.dtos.output.ProvinciaOutputDtoImp;
+import org.example.dtos.output.ProvinciaOutputDtoSimple;
 
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +40,7 @@ public class Provincia {
 
     private ClienteOutputDtoSimple convertirCliente(Cliente cliente) {
 
-        return new ClienteOutputDtoSimple(cliente);
+        return new ClienteOutputDtoSimpleEntity(cliente);
     }
 
     public ProvinciaOutputDtoSimple toOutputDtoSimple() {

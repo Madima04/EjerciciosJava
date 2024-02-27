@@ -3,12 +3,10 @@ package com.example.block7jpacomrelacionesyllamadasentremicros.application.imple
 import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.CabecerasDeFacturaRepository;
 import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.LíneasDeFacturaRepository;
 import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.ProductoRepository;
-import com.example.block7jpacomrelacionesyllamadasentremicros.application.CabecerasDeFacturaService;
 import com.example.block7jpacomrelacionesyllamadasentremicros.application.LíneasDeFacturaService;
-import com.example.block7jpacomrelacionesyllamadasentremicros.application.ProductoService;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.LíneasDeFacturaInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.LíneasDeFactura;
+import org.example.dtos.input.LíneasDeFacturaInputDto;
+import org.example.dtos.output.LíneasDeFacturaOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

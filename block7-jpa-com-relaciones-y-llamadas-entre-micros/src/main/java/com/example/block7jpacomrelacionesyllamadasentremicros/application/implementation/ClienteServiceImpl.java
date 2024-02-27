@@ -4,12 +4,12 @@ import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.Cabecer
 import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.ClienteRepository;
 import com.example.block7jpacomrelacionesyllamadasentremicros.Repository.ProvinciaRepository;
 import com.example.block7jpacomrelacionesyllamadasentremicros.application.ClienteService;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.ClienteInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDtoSimple;
+import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDtoSimpleEntity;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.Cliente;
 import com.example.block7jpacomrelacionesyllamadasentremicros.pojos.Provincia;
+import org.example.dtos.input.ClienteInputDto;
+import org.example.dtos.output.ClienteOutputDto;
+import org.example.dtos.output.ClienteOutputDtoSimple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -38,14 +38,20 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteOutputDtoSimple addCliente(ClienteInputDto clienteInputDto) {
+        ClienteOutputDtoSimpleEntity clienteOutputDtoSimpleEntity;
+        ClienteOutputDtoSimple clienteOutputDtoSimple = new ClienteOutputDtoSimple();
         Cliente cliente = new Cliente();
         cliente.setDNI(clienteInputDto.getDNI());
         cliente.setNombre(clienteInputDto.getNombre());
         cliente.setDirección(clienteInputDto.getDirección());
         Optional<Provincia> provincia = provinciaRepository.findById(clienteInputDto.getProvinciaId());
         provincia.ifPresent(cliente::setProvincia);
+        clienteOutputDtoSimpleEntity = new ClienteOutputDtoSimpleEntity(cliente);
+        clienteOutputDtoSimple.setDNI(clienteOutputDtoSimpleEntity.getDNI());
+        clienteOutputDtoSimple.setNombre(clienteOutputDtoSimpleEntity.getNombre());
+        clienteOutputDtoSimple.setDirección(clienteOutputDtoSimpleEntity.getDirección());
         clienteRepository.save(cliente);
-        kafkaTemplate.send("Cliente", cliente.toOutputDtoSimple());
+        kafkaTemplate.send("Cliente", clienteOutputDtoSimple);
         return cliente.toOutputDtoSimple();
     }
 
@@ -56,13 +62,19 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteOutputDto updateCliente(ClienteInputDto clienteInputDto, Long id) {
+        ClienteOutputDtoSimpleEntity clienteOutputDtoSimpleEntity;
+        ClienteOutputDtoSimple clienteOutputDtoSimple = new ClienteOutputDtoSimple();
         Cliente cliente = clienteRepository.findById(Math.toIntExact(id)).get();
         cliente.setDNI(clienteInputDto.getDNI());
         cliente.setNombre(clienteInputDto.getNombre());
         cliente.setDirección(clienteInputDto.getDirección());
         cliente.setProvincia(provinciaRepository.findById(clienteInputDto.getProvinciaId()).get());
         clienteRepository.save(cliente);
-        kafkaTemplate.send("Cliente", cliente.toOutputDtoSimple());
+        clienteOutputDtoSimpleEntity = new ClienteOutputDtoSimpleEntity(cliente);
+        clienteOutputDtoSimple.setDNI(clienteOutputDtoSimpleEntity.getDNI());
+        clienteOutputDtoSimple.setNombre(clienteOutputDtoSimpleEntity.getNombre());
+        clienteOutputDtoSimple.setDirección(clienteOutputDtoSimpleEntity.getDirección());
+        kafkaTemplate.send("Cliente", clienteOutputDtoSimple);
         return cliente.toOutputDto();
     }
 

@@ -1,11 +1,8 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.controller;
 
-import com.example.block7jpacomrelacionesyllamadasentremicros.application.implementation.ClienteServiceImpl;
 import com.example.block7jpacomrelacionesyllamadasentremicros.application.implementation.LíneasDeFacturaServiceImpl;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.ClienteInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.input.LíneasDeFacturaInputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDto;
+import org.example.dtos.input.LíneasDeFacturaInputDto;
+import org.example.dtos.output.LíneasDeFacturaOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

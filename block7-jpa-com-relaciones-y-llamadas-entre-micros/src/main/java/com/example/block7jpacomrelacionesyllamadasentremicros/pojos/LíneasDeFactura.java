@@ -1,9 +1,9 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.pojos;
 
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDtoSimple;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.LíneasDeFacturaOutputDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.dtos.output.LíneasDeFacturaOutputDto;
+import org.example.dtos.output.LíneasDeFacturaOutputDtoSimple;
 
 @Entity
 @Setter

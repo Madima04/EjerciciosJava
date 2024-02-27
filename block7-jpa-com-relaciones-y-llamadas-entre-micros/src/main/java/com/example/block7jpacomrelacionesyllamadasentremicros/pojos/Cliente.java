@@ -1,10 +1,10 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros.pojos;
 
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.CabecerasDeFacturaOutputDtoSimple;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDto;
-import com.example.block7jpacomrelacionesyllamadasentremicros.controller.dtos.output.ClienteOutputDtoSimple;
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.dtos.output.CabecerasDeFacturaOutputDtoSimple;
+import org.example.dtos.output.ClienteOutputDto;
+import org.example.dtos.output.ClienteOutputDtoSimple;
 
 import java.util.HashSet;
 import java.util.Set;
