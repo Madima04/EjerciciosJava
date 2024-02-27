@@ -34,7 +34,7 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public ProductoOutputDto updateProducto(int idProducto, ProductoInputDto productoInputDto) {
         Producto producto = new Producto();
-        producto.setIdProducto(productoInputDto.getIdProducto());
+        producto.setIdProducto(idProducto);
         producto.setDescripciónProducto(productoInputDto.getDescripciónProducto());
         producto.setPrecioProducto(productoInputDto.getPrecioProducto());
         //producto.setLineasDeFacturas((LíneasDeFactura) líneasDeFacturaRepository.findAllById(productoInputDto.getLíneasDeFactura()));
@@ -55,8 +55,9 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setDescripciónProducto(productoInputDto.getDescripciónProducto());
         producto.setPrecioProducto(productoInputDto.getPrecioProducto());
         //producto.setLineasDeFacturas((LíneasDeFactura) líneasDeFacturaRepository.findAllById(productoInputDto.getLíneasDeFactura()));
+        productoRepository.save(producto).toOutputDto();
         kafkaTemplate.send("Producto", producto.toOutputDtoSimple());
-        return productoRepository.save(producto).toOutputDto();
+        return producto.toOutputDto();
     }
 
     @Override

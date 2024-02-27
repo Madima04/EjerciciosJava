@@ -44,14 +44,19 @@ public class KafkaConsumerListener {
     }
 
     @KafkaListener(topics = "Producto", groupId = "group_id")
-    public void listenProducto(ProductoOutputDtoSimple producto) {
+    public void listenProducto(String producto) {
         logger.info("Received Message in group foo: " + producto);
-        HistoricoProductos historicoProductos = new HistoricoProductos();
-        historicoProductos.setProductoId(producto.getIdProducto());
-        historicoProductos.setNombre(producto.getDescripciónProducto());
-        if (historicoProductosRepository.findById(historicoProductos.getProductoId()).isPresent()) {
-            historicoProductosRepository.deleteById(historicoProductos.getProductoId());
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            HistoricoProductos historicoProductos = objectMapper.readValue(producto.toString(), HistoricoProductos.class);
+            historicoProductos.setIdProducto(historicoProductos.getIdProducto());
+            historicoProductos.setDescripciónProducto(historicoProductos.getDescripciónProducto());
+            if (historicoProductosRepository.findById(historicoProductos.getIdProducto()).isPresent()) {
+                historicoProductosRepository.deleteById(historicoProductos.getIdProducto());
+            }
+            historicoProductosRepository.save(historicoProductos);
+        } catch (Exception e) {
+            logger.error("Error al deserializar el JSON: " + e.getMessage());
         }
-        historicoProductosRepository.save(historicoProductos);
     }
 }

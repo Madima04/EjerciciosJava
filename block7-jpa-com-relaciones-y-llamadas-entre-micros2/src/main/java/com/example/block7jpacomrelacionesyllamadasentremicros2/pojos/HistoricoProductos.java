@@ -15,10 +15,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class HistoricoProductos {
     @Id
-    int productoId;
-    String nombre;
+    int idProducto;
+    String descripciónProducto;
+    double precioProducto;
 
     public HistoricoProductosOutput toHistoricoProductosOutput() {
-        return new HistoricoProductosOutput(productoId, nombre);
+        return new HistoricoProductosOutput(idProducto, descripciónProducto);
     }
 }

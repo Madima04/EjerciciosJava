@@ -12,3 +12,4 @@ public class ProductoOutputDtoSimple {
     String descripciónProducto;
     double precioProducto;
 }
+
