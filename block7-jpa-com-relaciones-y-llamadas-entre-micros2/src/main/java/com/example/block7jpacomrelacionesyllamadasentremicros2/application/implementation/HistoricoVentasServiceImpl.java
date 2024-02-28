@@ -1,7 +1,7 @@
 package com.example.block7jpacomrelacionesyllamadasentremicros2.application.implementation;
 
 import com.example.block7jpacomrelacionesyllamadasentremicros2.application.HistoricoVentasService;
-import com.example.block7jpacomrelacionesyllamadasentremicros2.gestionDeErorres.BeanNotFoundException;
+import com.example.block7jpacomrelacionesyllamadasentremicros2.exception.BeanNotFoundException;
 import com.example.block7jpacomrelacionesyllamadasentremicros2.pojos.HistoricoVentas;
 import com.example.block7jpacomrelacionesyllamadasentremicros2.pojos.dtos.input.HistoricoVentasInputDto;
 import com.example.block7jpacomrelacionesyllamadasentremicros2.pojos.dtos.output.HistoricoVentasOutputDto;

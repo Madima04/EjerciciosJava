@@ -1,4 +1,4 @@
-package com.example.block7jpacomrelacionesyllamadasentremicros2.gestionDeErorres;
+package com.example.block7jpacomrelacionesyllamadasentremicros2.exception;
 
 import java.util.Date;
 
