@@ -1,4 +1,4 @@
-package com.example.block7jpacomrelacionesyllamadasentremicros.config;
+package com.example.block7jpacomrelacionesyllamadasentremicros.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
