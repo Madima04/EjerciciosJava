@@ -1,22 +1,24 @@
 package com.example.BlockAsync.controller;
 
+import com.example.BlockAsync.dto.Mensaje;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-class ProgressController {
+public class ProgressController {
 
     private final Map<String, SseEmitter> emitters = new HashMap<>();
     private final Map<String, String> nameMap = new HashMap<>();
 
-    public void updateProgress(String requestId, int progress) {
+    public void updateProgress(String requestId, Mensaje mensaje) {
         SseEmitter emitter = emitters.get(requestId);
         if (emitter != null) {
             try {
-                emitter.send(progress);
+                emitter.send(mensaje);
             } catch (IOException e) {
                 emitter.completeWithError(e);
                 emitters.remove(requestId);
@@ -28,7 +30,7 @@ class ProgressController {
         SseEmitter emitter = emitters.get(requestId);
         if (emitter != null) {
             try {
-                emitter.send("Hola " + name);
+                emitter.send(new Mensaje("Hola " + name, "success"));
             } catch (IOException e) {
                 emitter.completeWithError(e);
             } finally {
@@ -53,8 +55,3 @@ class ProgressController {
         return nameMap.get(requestId);
     }
 }
-
-
-
-
-

@@ -12,5 +12,5 @@ import lombok.Setter;
 public class Mensaje {
     private String mensaje;
     private String estado;
-
 }
+
