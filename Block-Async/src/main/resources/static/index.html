@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Monitor</title>
+    <style>
+        #progress {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>Progress Monitor</h1>
+<form id="nameForm">
+    <label for="name">Nombre:</label>
+    <input type="text" id="name" name="name" required>
+    <button type="submit">Iniciar</button>
+</form>
+<div id="progress"></div>
+
+<script>
+    document.getElementById('nameForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const name = document.getElementById('name').value;
+        fetch(`http://localhost:8080/hola/${name}`, { method: 'POST' }) // Enviar el nombre al backend
+            .then(response => response.text())
+            .then(requestId => {
+                const eventSource = new EventSource(`http://localhost:8080/progress/${requestId}`); // Suscribirse a los eventos de SSE
+                eventSource.onmessage = function(event) {
+                    const message = event.data; // Obtener el mensaje del evento
+                    if (message.startsWith('Hola')) {
+                        document.getElementById('progress').innerText = message; // Mostrar el mensaje "Hola + nombre"
+                        eventSource.close(); // Cerrar la conexión de SSE cuando se recibe el mensaje final
+                    } else {
+                        document.getElementById('progress').innerText = `${message}%`; // Mostrar el mensaje de progreso con porcentaje
+                    }
+                };
+            })
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+</body>
+</html>
