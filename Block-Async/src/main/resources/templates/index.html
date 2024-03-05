@@ -9,6 +9,10 @@
             margin-bottom: 10px;
             font-size: 20px;
         }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -29,12 +33,15 @@
             .then(requestId => {
                 const eventSource = new EventSource(`http://localhost:8080/progress/${requestId}`); // Suscribirse a los eventos de SSE
                 eventSource.onmessage = function(event) {
-                    const message = event.data; // Obtener el mensaje del evento
-                    if (message.startsWith('Hola')) {
-                        document.getElementById('progress').innerText = message; // Mostrar el mensaje "Hola + nombre"
-                        eventSource.close(); // Cerrar la conexión de SSE cuando se recibe el mensaje final
+                    const mensaje = JSON.parse(event.data); // Parsear el mensaje como JSON
+                    if (mensaje.estado === 'error') {
+                        document.getElementById('progress').innerHTML = `<div class="error">Error: ${mensaje.mensaje}%</div>`; // Mostrar el mensaje de error en rojo y en negrita
+                        eventSource.close(); // Cerrar la conexión de SSE cuando se recibe un error
+                    } else if (mensaje.estado === 'success') {
+                        document.getElementById('progress').innerText = mensaje.mensaje; // Mostrar el mensaje de éxito
+                        eventSource.close(); // Cerrar la conexión de SSE cuando se recibe un mensaje de éxito
                     } else {
-                        document.getElementById('progress').innerText = `${message}%`; // Mostrar el mensaje de progreso con porcentaje
+                        document.getElementById('progress').innerText = `Progreso: ${mensaje.mensaje}%`; // Mostrar el mensaje de progreso con porcentaje
                     }
                 };
             })
