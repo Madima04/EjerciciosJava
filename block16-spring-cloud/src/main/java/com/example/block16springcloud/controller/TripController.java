@@ -1,9 +1,12 @@
 package com.example.block16springcloud.controller;
 
 import com.example.block16springcloud.application.TripService;
+import com.example.block16springcloud.configuration.rabbitMQ.publisher.RabbitMQProducer;
 import org.example.dto.input.TripInput;
 import org.example.dto.output.TripOutput;
 import org.example.dto.output.TripOutputSimple;
+import org.example.dto.output.TripSimplifyOutput;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +62,12 @@ public class TripController {
     @GetMapping("/trips/verify/{tripId}")
     public ResponseEntity<Boolean> verifyTrip(@PathVariable Integer tripId) {
         return new ResponseEntity<>(tripService.verifyTrip(tripId), HttpStatus.OK);
+    }
+
+    @PostMapping("/receiveTrip")
+    public ResponseEntity<Void> receiveTicket(@RequestBody TripSimplifyOutput ticket) {
+        System.out.println("Trip received: " + ticket.toString());
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -1,13 +1,12 @@
 package com.example.block16springcloud.application.impl;
 
 import com.example.block16springcloud.application.TripService;
-import com.example.block16springcloud.controller.TicketInterface;
+import com.example.block16springcloud.configuration.rabbitMQ.publisher.RabbitMQProducer;
 import com.example.block16springcloud.domain.Client;
 import com.example.block16springcloud.domain.Trip;
 import com.example.block16springcloud.repository.ClientRepository;
 import com.example.block16springcloud.repository.TripRepository;
 import org.example.dto.input.TripInput;
-import org.example.dto.output.TicketOutput;
 import org.example.dto.output.TripOutput;
 import org.example.dto.output.TripOutputSimple;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,8 @@ public class TripServiceImpl implements TripService {
     @Autowired
     ClientRepository clientRepository;
     @Autowired
-    TicketInterface ticketInterface;
+    private RabbitMQProducer rabbitMQProducer;
+
 
     @Override
     public TripOutputSimple addTrip(TripInput tripInput) {
@@ -31,7 +31,9 @@ public class TripServiceImpl implements TripService {
         trip.setDepartureDate(tripInput.getDepartureDate());
         trip.setArrivalDate(tripInput.getArrivalDate());
         trip.setStatus(tripInput.getStatus());
+        trip.setSeats(0);
         tripRepository.save(trip);
+        rabbitMQProducer.sendMessage(trip.toTripOutputSimple());
         return trip.toTripOutputSimple();
     }
 
@@ -45,6 +47,7 @@ public class TripServiceImpl implements TripService {
         trip.setDepartureDate(trip.getDepartureDate());
         trip.setArrivalDate(trip.getArrivalDate());
         trip.setPassangers(ClientRepository.findByTrip(trip));
+        trip.setSeats(trip.getSeats());
         trip.setStatus(trip.getStatus());
         return trip.toTripOutput();
     }
@@ -66,7 +69,6 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public TripOutput addClientToTrip(Integer id, Integer clientId) {
-        TicketOutput ticketOutput;
         Client client = clientRepository.findById(clientId).get();
         Trip trip = tripRepository.findById(id).get();
         if (trip.getPassangers().contains(client)) {
@@ -74,8 +76,6 @@ public class TripServiceImpl implements TripService {
         }if (trip.getPassangers().size() >= 20) {
             return trip.toTripOutput();
         }
-        ticketOutput = new TicketOutput(client.getId(), trip.getId(), client.getName(), client.getFirstSurname(), client.getEmail(), trip.getOrigin(), trip.getDestination(), trip.getDepartureDate(), trip.getArrivalDate());
-        ticketInterface.sendTicket(ticketOutput);
         trip.getPassangers().add(client);
         tripRepository.save(trip);
         return trip.toTripOutput();

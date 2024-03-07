@@ -11,6 +11,7 @@ public class TripOutput {
     private String destination;
     private Date departureDate;
     private Date arrivalDate;
+    private int seats;
     private List<ClientOutputSimple> passangersIds;
     private String status;
 }

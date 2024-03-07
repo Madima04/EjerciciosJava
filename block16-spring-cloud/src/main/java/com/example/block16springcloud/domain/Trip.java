@@ -30,17 +30,20 @@ public class Trip {
     private String destination;
     private Date departureDate;
     private Date arrivalDate;
+    private int seats;
     @OneToMany
     private List<Client> passangers;
     private String status;
 
     public TripOutputSimple toTripOutputSimple() {
         TripOutputSimple tripOutputSimple = new TripOutputSimple();
+        tripOutputSimple.setId(this.id);
         tripOutputSimple.setOrigin(this.origin);
         tripOutputSimple.setDestination(this.destination);
         tripOutputSimple.setDepartureDate(this.departureDate);
         tripOutputSimple.setArrivalDate(this.arrivalDate);
         tripOutputSimple.setStatus(this.status);
+        tripOutputSimple.setSeats(this.seats);
         return tripOutputSimple;
     }
 
@@ -52,6 +55,7 @@ public class Trip {
         tripOutput.setDepartureDate(this.departureDate);
         tripOutput.setArrivalDate(this.arrivalDate);
         tripOutput.setPassangersIds(getPassangersOutput());
+        tripOutput.setSeats(this.seats);
         tripOutput.setStatus(this.status);
         return tripOutput;
     }
