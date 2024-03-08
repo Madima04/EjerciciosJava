@@ -9,6 +9,7 @@ import com.example.block16springcloud.repository.TripRepository;
 import org.example.dto.input.TripInput;
 import org.example.dto.output.TripOutput;
 import org.example.dto.output.TripOutputSimple;
+import org.example.dto.output.TripSimplifyOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -100,5 +101,13 @@ public class TripServiceImpl implements TripService {
             return false;
         }
         return trip.getPassangers().size() <= 20;
+    }
+
+    @Override
+    public TripOutputSimple saveTrip(TripSimplifyOutput ticket) {
+        Trip trip = tripRepository.findById(ticket.getTripId()).get();
+        trip.setSeats(ticket.getSeat());
+        tripRepository.save(trip);
+        return trip.toTripOutputSimple();
     }
 }

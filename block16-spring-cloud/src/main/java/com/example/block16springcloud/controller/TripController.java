@@ -2,6 +2,7 @@ package com.example.block16springcloud.controller;
 
 import com.example.block16springcloud.application.TripService;
 import com.example.block16springcloud.configuration.rabbitMQ.publisher.RabbitMQProducer;
+import com.example.block16springcloud.repository.TripRepository;
 import org.example.dto.input.TripInput;
 import org.example.dto.output.TripOutput;
 import org.example.dto.output.TripOutputSimple;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/trip-service")
 public class TripController {
     private final TripService tripService;
+    @Autowired
+    RabbitMQProducer rabbitMQProducer;
 
     public TripController(TripService tripService) {
         this.tripService = tripService;
@@ -66,8 +69,8 @@ public class TripController {
 
     @PostMapping("/receiveTrip")
     public ResponseEntity<Void> receiveTicket(@RequestBody TripSimplifyOutput ticket) {
-        System.out.println("Trip received: " + ticket.toString());
-        return ResponseEntity.ok().build();
+        rabbitMQProducer.sendMessage(tripService.saveTrip(ticket));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

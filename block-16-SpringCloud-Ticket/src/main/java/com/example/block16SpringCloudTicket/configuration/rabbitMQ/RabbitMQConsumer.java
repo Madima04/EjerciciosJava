@@ -23,6 +23,12 @@ public class RabbitMQConsumer {
         TripSimplify tripSimplify = new TripSimplify();
         tripSimplify.setTripId(message.getId());
         tripSimplify.setSeats(message.getSeats());
+        if (tripSimplifyRepository.findByTripId(tripSimplify.getTripId()) != null) {
+            tripSimplifyRepository.delete(tripSimplifyRepository.findByTripId(tripSimplify.getTripId()));
+            tripSimplify.setSeats(tripSimplify.getSeats() + tripSimplifyRepository.findByTripId(tripSimplify.getTripId()).getSeats());
+        }
         tripSimplifyRepository.save(tripSimplify);
     }
+
+
 }

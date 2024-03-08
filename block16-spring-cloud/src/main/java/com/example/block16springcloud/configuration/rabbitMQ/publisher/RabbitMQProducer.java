@@ -2,6 +2,7 @@ package com.example.block16springcloud.configuration.rabbitMQ.publisher;
 
 import org.example.dto.output.TripOutput;
 import org.example.dto.output.TripOutputSimple;
+import org.example.dto.output.TripSimplifyOutput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

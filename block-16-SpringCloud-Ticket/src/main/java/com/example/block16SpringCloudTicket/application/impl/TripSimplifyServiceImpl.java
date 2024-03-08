@@ -41,7 +41,6 @@ public class TripSimplifyServiceImpl implements TripSimplifyService {
         System.out.println("TripSimplify " + tripSimplify.toString());
         if (tripSimplify.getSeats() + cantidad <= 20) {
             tripSimplify.setSeats(tripSimplify.getSeats() + cantidad);
-            tripSimplifyRepository.save(tripSimplify);
             return tripSimplify.toTripSimplifyOutput();
         }
         return null;
