@@ -11,6 +11,4 @@ public interface DefinitionRepo extends ElasticsearchRepository<Definition, Stri
 
     Optional<Definition> findById(String id);
 
-    @Query("{\"bool\": {\"should\": [{\"match\": {\"word\": \"?0\"}},{\"match\": {\"meaning\": \"?0\"}}]}}")
-    Optional<List<Definition>> findByWordOrMeaning(String word);
 }

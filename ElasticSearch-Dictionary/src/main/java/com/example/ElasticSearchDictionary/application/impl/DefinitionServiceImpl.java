@@ -1,20 +1,28 @@
 package com.example.ElasticSearchDictionary.application.impl;
 
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import com.example.ElasticSearchDictionary.application.DefinitionService;
 import com.example.ElasticSearchDictionary.controller.input.DefinitionInput;
 import com.example.ElasticSearchDictionary.controller.output.DefinitionOutput;
 import com.example.ElasticSearchDictionary.domain.Definition;
-
 import com.example.ElasticSearchDictionary.repository.DefinitionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
+import org.springframework.data.elasticsearch.core.SearchHit;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DefinitionServiceImpl implements DefinitionService {
+
+    @Autowired
+    private ElasticsearchOperations operations;
 
     @Autowired
     private DefinitionRepo dictionaryRepo;
@@ -38,11 +46,21 @@ public class DefinitionServiceImpl implements DefinitionService {
 
     @Override
     public List<DefinitionOutput> getDictionaryById(String word) {
-        List<DefinitionOutput> output = new ArrayList<>();
-        for (Definition dictionary : dictionaryRepo.findByWordOrMeaning(word).get()) {
-            output.add(dictionary.toOutput());
-        }
-        return output;
+        Query query = NativeQuery.builder()
+                .withQuery(q -> q
+                        .multiMatch(m -> m
+                                .fields("word")
+                                .fields("meaning")
+                                .query(word)
+                        )
+                )
+                .build();
+
+        SearchHits<Definition> searchHits = operations.search(query, Definition.class);
+        return searchHits.getSearchHits().stream()
+                .map(SearchHit::getContent)
+                .map(Definition::toOutput)
+                .collect(Collectors.toList());
     }
 
     @Override
