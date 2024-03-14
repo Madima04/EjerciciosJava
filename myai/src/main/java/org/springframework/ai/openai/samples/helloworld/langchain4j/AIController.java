@@ -1,4 +1,4 @@
-package org.springframework.ai.openai.samples.helloworld.simple;
+package org.springframework.ai.openai.samples.helloworld.langchain4j;
 
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
