@@ -1,0 +1,5 @@
+123456789Sony                Xperia 5            Negro     1250.75  2023
+987654321Apple               iPhone 12           Blanco    1499.99  2022
+456789123Samsung             Galaxy S20          Azul      1350.50  2021
+654321987Huawei              P40 Pro             Gris      1100.25  2020
+789123456Xiaomi              Mi 11               Rojo      999.99   2023
